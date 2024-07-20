@@ -1,0 +1,30 @@
+
+Question1
+
+create a namespace ckad
+in ckad namespace create a pod named pod1 with image nginx 2.3.4 and expose port 80
+verify if the pod is running
+retrieve the ip adress of the pod
+run a temporary pod using image busybox, shell into it and run wget against a pod1
+view the logs of pod1
+delete the pod1 and the namespace
+
+------------------------------------------------------------------------------------------
+solution:
+
+kubectl create ns ckad
+kubectl run pod1 --image=nginx:2.3.4 --port=80 -n ckad
+
+kubectl get pods -n ckad (check if the pod is running)
+
+kubectl describe pod <pod_name> -n ckad
+
+kubectl run pod tempod --image=busybox -it  -- bin/sh
+kubectl exec -it tempod -n ckad --bin/sh
+
+wget <ip_of_pod_1>
+
+kubectl logs pod1
+
+kubectl delete pod <pod_names> -n ckad
+kubectl delete ns ckad

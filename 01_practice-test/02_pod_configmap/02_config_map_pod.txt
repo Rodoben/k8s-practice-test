@@ -1,0 +1,47 @@
+Question2:
+
+create a new file named config.txt with the following environment variables as key/value pairs
+DB_URL-localhost:1433 and DB_USERNAME-speed
+
+create a new configmap named db-config
+
+create a pod named sqlsvr that uses te environment variables from the configmap and runs a container using image of nginx
+
+shell into the pod and display the created environment variables
+
+---------------------------------------------------------------------------------------------------------------------------
+
+solution:
+
+touch config.txt
+vi config.txt
+place the key/value pairs in the text
+example:
+DB_URL=localhost:1433
+DB_USERNAME=speed
+
+save the file
+
+
+kubectl create cm db-config --from-literal DB_URL=localhost:1433 --from-literal DB_USERNAME=speed
+kubectl create cm db-config --from-env-file=<file_name.txt>
+
+kubectl run sqlsvr --image=nginx --dry-run=client -o yaml > sqlsvrpod.yaml
+
+edit in the container to use configmap
+
+spec:
+  - name: <container_name>
+    image: <image_name>
+    env:
+    - name: <env_name>
+        valueFrom:
+          configMapKeyRef:
+            name: <cm-name>
+            key: <cm-key-name>
+    - name: <env_name>
+        valueFrom:
+          configMapKeyRef:
+            name: <cm-name>
+            key: <cm-key-name>
+kubectl exec -it sqlsvr -- bin/sh
