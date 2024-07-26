@@ -1,0 +1,34 @@
+Question 5
+
+Create a resource quota named app under the namespace rq-demo
+use a file named rq.yaml 
+
+create a new pod that exceeds the limits of the resource quota be definig 1G of memory. note the error
+
+change the request limits to fulfil the requirements to ensure that the pod can be created successfully.
+
+
+Solution:
+
+kubectl create ns rq-demo
+
+kubectl create quota app --hard=cpu=1,memory=500m,pods=2 -n rq-demo --dry-run=client -o yaml > rq5.yaml
+
+
+kubectl run highpod --image=nginx --dry-run=client -n rq-demo -o yaml > pod.yaml
+
+under the container 
+
+spec: 
+ container:
+ - name: high-priority
+   image: <image_name>
+   resources:
+     requests:
+       memory: "1Gi"
+       cpu: "500m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m
+
+now decrease the number for requesting and re run the pod again.

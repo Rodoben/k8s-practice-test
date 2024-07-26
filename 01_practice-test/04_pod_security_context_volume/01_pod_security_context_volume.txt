@@ -1,0 +1,32 @@
+Question 4:
+
+Create a pod named secured that uses the image nginx. Mount an emptyDir volume to the directory /data/app
+
+file created on the volume should use the filesystem group id 3000
+
+shell to the running container and create a new file named logs.txt in the directory /data/app list the contents of the directory and write them down.
+
+
+Solution:
+
+
+kubectl run secured --image=nginx --dry-run=client -o yaml > securedpod.yaml 
+
+
+apiVersion: v1
+kind: pod
+metadata:
+  name: secured
+spec:
+ securityContext:
+   fsGroup: 3000
+ containers:
+ - image: nginx
+   name: secured
+   volumemounts:
+   - name: vol-1
+     mountPath: /data/app
+
+ volumes:
+ - name: vol-1
+   emptyDir: {} 
