@@ -1,0 +1,25 @@
+Question:
+
+Create a namespace named web. use the yaml file (declarative way)
+
+In this namespace run a pod web-nginx  with image nginx
+
+Solution:
+---
+apiVersion: V1
+kind: Namespace
+metadata:
+  name: web
+
+---
+
+apiVersion: V1
+kind: Pod
+metadata:
+  name: web-nginx
+  namespace: web
+spec:
+ containers:
+ - name: web
+   image: nginx
+

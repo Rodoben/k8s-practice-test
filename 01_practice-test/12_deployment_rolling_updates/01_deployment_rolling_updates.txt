@@ -1,0 +1,36 @@
+Question:
+
+create a deployment named deploy with three replicas, the pod should use the image nginx with name nginx
+THe deployment uses the label tier=backend.The pod should use the label app=v1
+
+list the deployment to ensure that the correct numbers of  replicas  are running 
+
+update the image to nginx:latest
+
+verify the change has been rolled out to all the replicas 
+
+scale the deployment to 5 replicas
+
+have a look at the deployment history 
+
+revert the deploymen to revision 1
+
+ensure the pods are using the image nginx
+
+
+Solution:
+
+kubectl create deploy deploy --image=nginx --replicas=3 --dry-run=client -o yaml > deploy.yaml
+
+add a label tier-backend to the deployment label inside metadata
+
+add app=v1 to pod level and container level inside metadata
+
+kubctl set image deployment/deploy nginx=nginx:latest
+
+
+kubectl scale deployment deploy --replicas=5
+
+kubectl rollout history deployment/deploy
+
+kubectl rollout undo deployment/deploy --to-revision=1

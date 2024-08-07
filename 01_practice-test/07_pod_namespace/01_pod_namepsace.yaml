@@ -1,0 +1,19 @@
+
+---
+# creating namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: web
+
+---
+# creating a pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-nginx
+  namespace: web
+spec:
+ containers:
+ - name: web
+   image: nginx

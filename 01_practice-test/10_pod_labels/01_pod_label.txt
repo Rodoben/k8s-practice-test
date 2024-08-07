@@ -1,0 +1,30 @@
+Create 3 different pods with names of the web, batch and databse and use the image of the nginx.
+
+Declare labels for these pods as follows:
+web - env=prod , tiew=webbatch -env=prod, tiew=batch
+database -env=prod, tiew=databse
+
+list the pods and their labels
+use label selectors to query got all the production belongs to web and batch
+
+remove label tier from the databse pod
+
+
+
+Solution:
+
+    kubectl run  web --image=nginx 
+    kubectl run  batch --image=nginx 
+    kubectl run  database --image=nginx 
+
+
+    kubectl label web  tier=web env=prod
+    kubectl label batch  tier=batch env=prod
+    kubectl label database  env=prod tier=databse
+
+
+    kubectl get pods --show-labels
+
+    kubectl get pods --selector='tier in (web), env in (prod)'
+
+    kubectl label database tier-

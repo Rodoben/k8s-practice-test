@@ -1,0 +1,41 @@
+Question:
+
+
+Create a pod named hello with the image speedrace5dave/nodejs-helloworld that exposes the port 3000. Name the port nodejs-port 
+
+Add a rediness probe that checks the url path / on the port with the same name aboce after a 2 second. 
+
+Add a liveness probe that verify the app is running every 5 second by checking the url path / on the port referenced with nodejs-port. The Probe shoudl start with the 5 second delay 
+
+Shell into the container and curl localhost:3000. note the message and retrieve the message formt he container.
+
+
+Solution:
+
+kubectl run hello --image= speedrace5dave/nodejs-helloworld --port=3000 --dry-run=client -o yaml > hellopod.yaml
+
+apiVersion: V1
+kind: Pod
+metadata:
+name: hello
+spec:
+ containers:
+  - image: speedrace5dave/nodejs-helloworld
+    name: nodejs
+    ports:
+    - containerPort: 3000
+      name: nodejs-port
+    readinessProbe:
+     httpGet:
+       path: /
+       port: nodejs-port
+     initialDelaySeconds: 2
+    periodSeconds: 5
+    livenessProbe:
+     httpGet:
+       path: /
+       port: nodejs-port
+     initialDelaySeconds: 5
+     periodSeconds: 5
+   
+       
