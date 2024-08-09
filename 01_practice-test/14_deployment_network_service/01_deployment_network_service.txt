@@ -1,0 +1,25 @@
+Question:
+
+Create a service named myapp of type clusterIP that exposes port 80 to the target port 80.
+Create a deployment named myapp that creates 1 replicas running the image nginx. Expose the container on port 80
+
+Verify port 80 is exposed - list the endpoint values
+
+scale the deployment to 2 replicas
+
+Create a temporary pod using the image busybox ad run wget command against the IP address of the service.
+
+Change the service type so the pods can be reached from outside of the cluster
+
+Run wget command against the service from outside the cluster.
+
+
+
+Solution:
+
+kubectl create svc  clusterip myapp --tcp=80:80
+
+kubectl create deployment myapp --image=nginx --replicas=1
+
+kubectl scale deployment myapp --replicas=2
+

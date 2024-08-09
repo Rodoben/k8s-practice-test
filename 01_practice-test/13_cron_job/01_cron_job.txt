@@ -1,0 +1,21 @@
+Question:
+
+Create a cronJob named show-date that runs every minutea and execute the shell command echo "current date: $(date)"
+Watch the job as they are being scheduled 
+
+Identify one of the Pods that ran the CronJob and render the logs
+
+Determine the number of succesful executions the CronJobs will keep in its history
+
+delete the job
+
+
+Solution:
+
+kubectl create cronjob show-date --image=busybox --schedule="*/1 * * * *" -- bin/sh -c 'echo "current date:$(date)"'
+
+kubectl logs <pod_name>
+
+kubectl get cj <cj_name> -o yaml
+
+kubectl delete cj <cj_name>
