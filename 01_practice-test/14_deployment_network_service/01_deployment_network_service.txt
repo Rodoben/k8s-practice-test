@@ -9,7 +9,7 @@ scale the deployment to 2 replicas
 
 Create a temporary pod using the image busybox ad run wget command against the IP address of the service.
 
-Change the service type so the pods can be reached from outside of the cluster
+Change the service type so the pods can be reached from outside of the cluster.
 
 Run wget command against the service from outside the cluster.
 
