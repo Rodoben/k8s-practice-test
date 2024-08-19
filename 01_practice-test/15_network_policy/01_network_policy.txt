@@ -1,0 +1,109 @@
+Question:
+
+Create a namespace app-stack
+create 3 pods frontend, backend, database
+create a network policy yaml file
+The network policy should allow the trafic from backend to database but not from the frontend.
+Incoming traffic to the databse should only be allowed on TCP Port 3306
+
+Solution:
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: app-stack
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: database-config
+data:
+ DB_URL: "postgres/sff"
+ DB_PASSWORD: "password"
+ DB_USER: "user"
+
+---
+apiVersion: v1
+kind: Pod  
+metadata:
+  name: frontend
+  namespace: app-stack
+  labels:
+    app: todo
+    tier: frontend
+spec:
+  containers:
+  - image: nginx
+    name: frontend
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: backend
+  namespace: app-stack
+  labels:
+  app: todo
+  tier: backend
+spec: 
+  containers:
+  - image: nginx
+    name: backend
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+ name: database
+ namespace: app-stack
+ labels:
+   tier: database
+   app: todo
+spec:
+  containers:
+  - image: nginx
+    name: database
+    env:
+    - name: DB_URL
+      valueFrom:
+        configMapRefKey:
+         name: database-config
+         key: DB_URL
+    - name: DB_USER
+      valueFrom:
+        configMapRefKey:
+          name: database-config 
+          key: DB_USER
+    - name: DB_PASSWORD
+      valueFrom:
+        configMapRefKey:
+          name: database-config
+          key: DB_PASSWORD
+
+--
+
+apiversion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: net-pol-1
+  namespace: app-stack
+spec:
+ podSelector:
+   matchLabels:
+    app: todo
+    tier: database
+ policyTypes:
+ - Ingress
+ - Egress
+ ingress:
+ - from:
+   - podSelector:
+       matchLabels:
+         app: todo 
+         tier: backend
+    ports: 
+    - protocol: TCP
+      port: 80
