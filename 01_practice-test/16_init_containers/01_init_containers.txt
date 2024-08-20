@@ -1,0 +1,50 @@
+Question:
+
+Create a new pod in a YAML file named buisness-app.yaml. The Pod should define two containers, one init container and one main application container.Name the init container configurer and the main conatainer web. The init container uses the image busybox, the main container uses the image speedracer5dave/nodejs-read-config:latest. Expose the main container on port 8080.
+
+
+https://raw.githubusercontent.com/speedracer55/ckad-crash-course/master/exercises/07-creating-init-container/app/config/config.json
+
+Edit the YAML file by adding a new volume of type emptyDir mounted as /user/shared/app for both containers.
+
+Edit the YAML file by providing the command for the init container. The init container should tun a wget command for downloading the file <some-url> into a directory /usr/shared/app
+
+Start the pod and verify init container started and terminated, the web conatainer is running and volumes are mounted.
+
+Run the command curl localhost:8080 from the main application container. The response should render a database URL derived off the config file.
+
+
+Solution:
+
+apiVersion: v1
+kind: Pod
+metdata:
+  name: buiness-app
+spec:
+  initContainers:
+  - name: configurer
+    image: busybox
+    command:
+    - wget
+    - "-O"
+    - "/usr/shared/app/config.json"
+    - https://raw.githubusercontent.com/speedracer55/ckad-crash-course/master/exercises/07-creating-init-container/app/config/config.json
+    volumeMounts:
+    - mountPath: /usr/shared/app
+      name: shared-volume
+  containers:
+  - name: web
+    image: speedracer5dave/nodejs-read-config:latest
+    ports:
+    - contianersPort: 8080
+    volumeMounts:
+    - mountPath: /usr/shared/app
+      name: shared-volume
+  volumes:
+  - name: shared-volume
+    emptyDir: {}
+    
+  
+
+     
+         

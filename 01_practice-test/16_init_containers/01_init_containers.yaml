@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: buisness-app
+spec:
+  initContainers:
+  - image: busybox
+    name: configurer
+    command:
+    - wget
+    - "-O"
+    - "/usr/shared/app/config.json"
+    - https://raw.githubusercontent.com/speedracer55/ckad-crash-course/master/exercises/07-creating-init-container/app/config/config.json
+    volumeMounts:
+    - mountPath: /usr/shared/app
+      name: shared-volume
+  containers:
+  - image: speedracer5dave/nodesjs-read-config
+    name: web
+    ports:
+    - containerPort: 8080
+    volumeMounts:
+    - mountPath: /usr/shared/app
+      name: shared-volume    
+  volumes:
+  - name: shared-volume
+    emptyDir: {}  
