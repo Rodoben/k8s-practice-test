@@ -1,0 +1,26 @@
+Question:
+Create a new pod named speed running the image nginx:1.17.10 . using port 80, th epod should be in the namespace of ckad1
+get the pod ip address
+create a temporary pod that uses the busybox image and execute a wget command inside of the container. the wget command should access the endpoint exposed by the nginx container.
+Get the logs of the speed container 
+add the environament varibales DB_URLpostgressql://speeddb:5432 and DB_USERNAME-trixie
+open a shell for the nginx container and inspect he contents of the current directory ls -logs
+Create a YAML manifest for a pod named loop that runs the busybox image in a container. 
+The container should run the following command for i in{1.10}; echo "welcome $1 times",done what is the status of the pod
+edit the pod loop change the command to run in an endless loop, each iteration should echo the current date
+delete the namespace ckad1
+
+
+Solution:
+kubectl run speed --image=nginx:1.17.10 --port=80 -n ckad1
+kubectl get pods -o wide
+kubectl run tempod --image=busybox ----------
+kubectl logs speed
+kubectl create cm db-config-cm --from-literal DB_URL=postgressql://speeddb:5432 --from-literal DB_USERNAME=trixie
+then add in the pod 
+kubectl exec -it speed -- /bin/bash
+ls -l
+kubectl run loop --image=busbox --dry-run=client -o yaml > loop.yaml
+edit the file
+
+kubectl delete ns ckad1

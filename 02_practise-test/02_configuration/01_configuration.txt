@@ -1,0 +1,34 @@
+create a directory with name config. Crsate two files in the directory . First file named db.txt and contain key value pair of password=speed
+
+A Second file namd ext-service.txt with key value pair of api_key=Abc1234pL
+
+create a secret named ext-service-secret that used the directory as data source and inspect the yaml representaion of the object.
+
+create a pod named consume with the image of nginx and mount the volume with the mounth path /var/app open an interactive sheel and inspect the values of the secret.
+
+Use the declarative approach to create a Configmap named ext-service-configma. Use the key value pairs api_endpoint= https://myapp.com/api and usename=trixie as literals 
+
+inject the configMap values into the existing pod as environment varibales
+
+Open an interactive shell and inspect the values of configMap
+
+Define a security context on the container level of a new pod named security-context-demo thet uses the image alpine. THe security conetext adds the linux capabilities 
+CAP_SYS_TIME to the container Explain if the value of this security context can be redefined in a pod level security context.
+
+Define a ResourceQuota for the namespace project-corvette. The rules should constrain the count of secret object within the namespace to 1.
+
+Create as many secret objects within the namespace until the max number enforced by the resource quota has been reached.
+
+Create a new service account named monitoring and assigns it to a new pod with an image of your choosing. 
+open an interactive session and locate the authentication token of the assigned service account
+
+
+solution:
+mkdir config
+touch db.txt ext-service.txt
+echo "password=speed" > db.txt
+echo "api_key=Abc1234pL" > ext-service.txt
+
+kubectl create secret generic ext-service-secret --from-file=./config/ext-service.txt
+kubectl get secret generic ext-service-secret -o yaml > secret.yaml
+kubectl run consume --image=nginx --dry-run=client -o yaml > 

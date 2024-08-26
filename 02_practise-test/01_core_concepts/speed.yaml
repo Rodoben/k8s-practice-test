@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: ckad1
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-cred-cm
+  namespace: ckad1
+data:
+  DB_URL: "postgressql://speeddb:5432"
+  DB_USERNAME: "trixie"
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: speed
+  name: speed
+  namespace: ckad1
+spec:
+  containers:
+  - image: nginx:latest
+    name: speed
+    env:
+    - name: DB_URL
+      valueFrom:
+       configMapKeyRef:
+         name: db-cred-cm
+         key: DB_URL    
+    - name: DB_USERNAME
+      valueFrom:
+         configMapKeyRef:
+           name: db-cred-cm
+           key: DB_USERNAME       
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
