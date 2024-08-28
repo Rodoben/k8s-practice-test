@@ -1,0 +1,21 @@
+Question:
+
+Define a new pod named webserver with the image of nginx in a YAML mainifeat. Expose the container on port 80.
+Do not create the pod yet
+
+For the container,declare a startup probe of httpget. verify the root context endpoint can be called. 
+Use the default config for the probe.
+
+For the container, declare a readiness probe of type httpGet, Verify the context endpoint can be called. Wait 5 seconds before checking for the first time.
+
+For the container, declare a liveness probe of type httpGet. Verify the root context endpoint can be called. wait 10 seconds before checking for the first time. The probe should run the check every 30 seconds
+
+Create the pod and follow the lifecycle phases of the pod during the process.
+
+Inspect the runtime details of the probes of the pod.
+
+Retreive the metrics of the pod (cpu/memory) from the metrics server.
+
+Create a pod named custom-cmd with the image busybox. The container should runt he command top-analyzer with the command- line flag -all
+
+inspect the status. How would you troubleshoot the pod to identify the t=root cause of the failure.
