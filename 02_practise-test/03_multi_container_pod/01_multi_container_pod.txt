@@ -1,0 +1,42 @@
+Question:
+
+Create a YAML manifest for a pod named compalex-pod.The main application container named app should use the image nginx  and expose the container at port 80.
+Modify the yaml so that the pod uses an init container named setup that uses image busybox, the container run wget -O- www.google.com
+
+Create a pod from the YAML manifest
+
+Download the logs of the init container. you should see the output of the wget command 
+
+open an interactive sheel for the main container and list down the content ls 
+
+force delete the pod.
+
+Create a YAML manifest for a pod named data-exchange. The main application container named main-app should use the image busybox.
+The container runs a command that writes a new file every 30 seconds in an infinite loop in directory /var/app/data. The filename follows the pattern {counter++}-data.txt.
+The variable counter is incremented every interval and starts with the value of 1
+
+Modify the YAML manifest by adding a sidecar named sidecar. The sidecar container uses the imafe of a busybox and runs a command that counts the number of files produced bu the main-app container every 30 second in an infinite loop. The Command write the number of files to standard output.
+
+Deffine a volume of type emptydir. Mount the path /var/app/data fot both containers.
+
+Create the pod. Tail the logs of the sidecar container
+Delete the pod.
+
+
+Solution:
+
+kubectl run complex-pod --image=nginx --port=80 --dry-run=client -o yaml > complex-pod.yaml
+
+initContainer:
+- image: <image_name>
+  name: <container_name>
+  command:
+  - wget
+  - "-O-"
+  - 'www.google.com"
+
+kubectl logs complex-pod -c setup
+kubectl exec -it  complex-pod -c main -- bin/sh
+ls 
+
+kubectl delete pod <pod_name>
