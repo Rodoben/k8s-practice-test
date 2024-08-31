@@ -26,7 +26,6 @@ Delete the pod.
 Solution:
 
 kubectl run complex-pod --image=nginx --port=80 --dry-run=client -o yaml > complex-pod.yaml
-
 initContainer:
 - image: <image_name>
   name: <container_name>
@@ -38,5 +37,5 @@ initContainer:
 kubectl logs complex-pod -c setup
 kubectl exec -it  complex-pod -c main -- bin/sh
 ls 
-
 kubectl delete pod <pod_name>
+kubectl run data-exchange --image=busybox --dry-run=client -o yaml > data-exchange
